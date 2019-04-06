@@ -3,7 +3,7 @@ M5 Core Bluetooth to TFT display terminal. This sketch makes your M5 Core into a
 
 Starting Code framework nearly entirely from https://github.com/Bodmer/TFT_eSPI/tree/master/examples/320%20x%20240/TFT_Terminal. 
 
-THIS m5stack branch is for work on integrating into M5Stack. May be broken at times.
+This MAIN m5stack branch is for work on integrating into M5Stack. Working ATM.
 
 Linux Example:
 ```
