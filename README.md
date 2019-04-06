@@ -1,15 +1,9 @@
 # M5 BLUETERM
 M5 Core Bluetooth to TFT display terminal. This sketch makes your M5 Core into a remote bluetooth terminal.
 
-Currently using the TFT_eSPI library directly as M5.Lcd scrolling is broken. Code framework nearly entirely from https://github.com/Bodmer/TFT_eSPI/tree/master/examples/320%20x%20240/TFT_Terminal. Will be heavily altering code in this branch for more functionality. m5stack branch is for work on integrating into M5Stack.
+Currently using the TFT_eSPI library directly as M5.Lcd scrolling is broken. Code framework nearly entirely from https://github.com/Bodmer/TFT_eSPI/tree/master/examples/320%20x%20240/TFT_Terminal. 
 
-You need to define the driver to use with TFT_eSPI first:
-```
-s@AirBoi:~$ cd Arduino/libraries/
-s@AirBoi:~/Arduino/libraries$ cd TFT_eSPI/
-s@AirBoi:~/Arduino/libraries/TFT_eSPI$ vim User_Setup_Select.h 
-Find and UNCOMMENT: //#include <User_Setups/Setup1_ILI9341.h>  // Setup file configured for my ILI9341
-```
+THIS m5stack branch is for work on integrating into M5Stack. May be broken at times.
 
 Linux Example:
 ```
