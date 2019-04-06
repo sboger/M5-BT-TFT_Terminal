@@ -22,8 +22,9 @@
   BSD license applies, all text above must be included in any
   redistribution
  *************************************************************/
-#include <TFT_eSPI.h> // Hardware-specific library
-#include <SPI.h>
+//#include <TFT_eSPI.h> // Hardware-specific library
+//#include <SPI.h>
+#include <M5Stack.h>
 #include "BluetoothSerial.h"
 
 BluetoothSerial SerialBT;
