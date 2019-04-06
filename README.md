@@ -1,4 +1,4 @@
-# M5-BT-TFT_Terminal
+# M5 BLUETERM
 M5 Core Bluetooth to TFT display terminal. This sketch makes your M5 Core into a remote bluetooth terminal.
 
 Currently using the TFT_eSPI library directly as M5.Lcd scrolling is broken.
