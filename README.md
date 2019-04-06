@@ -3,12 +3,12 @@ M5 Core Bluetooth to TFT display terminal. This sketch makes your M5 Core into a
 
 Currently using the TFT_eSPI library directly as M5.Lcd scrolling is broken. Code nearly entirely from https://github.com/Bodmer/TFT_eSPI/tree/master/examples/320%20x%20240/TFT_Terminal.
 
-You might need to define the driver to use with TFT_eSPI first:
+You need to define the driver to use with TFT_eSPI first:
 ```
 s@AirBoi:~$ cd Arduino/libraries/
 s@AirBoi:~/Arduino/libraries$ cd TFT_eSPI/
-s@AirBoi:~/Arduino/libraries/TFT_eSPI$ vim User_Setup.h 
-(CHANGE '//#define ILI9341_DRIVER' to '#define ILI9341_DRIVER' if not defined.)
+s@AirBoi:~/Arduino/libraries/TFT_eSPI$ vim User_Setup_Select.h 
+Find and UNCOMMENT: //#include <User_Setups/Setup1_ILI9341.h>  // Setup file configured for my ILI9341
 ```
 
 Linux Example:
