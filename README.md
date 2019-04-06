@@ -1,8 +1,7 @@
 # M5 BLUETERM
 M5 Core Bluetooth to TFT display terminal. This sketch makes your M5 Core into a remote bluetooth terminal.
 
-Currently making direct TFT_eSPI library calls as M5.Lcd scrolling is broken. 
-Code framework nearly entirely from https://github.com/Bodmer/TFT_eSPI/tree/master/examples/320%20x%20240/TFT_Terminal. 
+Starting Code framework nearly entirely from https://github.com/Bodmer/TFT_eSPI/tree/master/examples/320%20x%20240/TFT_Terminal. 
 
 THIS m5stack branch is for work on integrating into M5Stack. May be broken at times.
 
