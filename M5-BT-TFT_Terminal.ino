@@ -60,6 +60,8 @@ boolean selected = 1;
 int blank[19]; // We keep all the strings pixel lengths to optimise the speed of the top line blanking
 
 void setup() {
+  M5.begin();
+
   // Setup the TFT display
   tft.init();
   tft.setRotation(1); // Must be setRotation(0) for this sketch to work correctly
