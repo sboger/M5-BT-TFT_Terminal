@@ -29,7 +29,7 @@
 
 BluetoothSerial SerialBT;
 
-TFT_eSPI tft = TFT_eSPI();       // Invoke custom library
+//TFT_eSPI tft = TFT_eSPI();       // Invoke custom library
 
 // The scrolling area must be a integral multiple of TEXT_HEIGHT
 #define TEXT_HEIGHT 16 // Height of text to be printed and scrolled
@@ -63,20 +63,18 @@ void setup() {
   M5.begin();
 
   // Setup the TFT display
-  tft.init();
-  tft.setRotation(1); // Must be setRotation(0) for this sketch to work correctly
-  tft.fillScreen(TFT_BLACK);
+  M5.Lcd.init();
+  M5.Lcd.setRotation(1);
+  M5.Lcd.fillScreen(TFT_BLACK);
   
-  // Setup baud rate and draw top banner
-  //Serial.begin(9600);
   SerialBT.begin("BLUETERM"); //Bluetooth device name
   
-  tft.setTextColor(TFT_WHITE, TFT_BLUE);
-  tft.fillRect(0,0,320,16, TFT_BLUE);
-  tft.drawCentreString(" BLUETERM2 ",320/2,0,2);
+  M5.Lcd.setTextColor(TFT_WHITE, TFT_BLUE);
+  M5.Lcd.fillRect(0,0,320,16, TFT_BLUE);
+  M5.Lcd.drawCentreString(" BLUETERM ",320/2,0,2);
 
   // Change colour for scrolling zone text
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
 
   // Setup scroll area
   setupScrollArea(TOP_FIXED_AREA, BOT_FIXED_AREA);
@@ -93,8 +91,8 @@ void loop(void) {
   //
   if (change_colour){
     change_colour = 0;
-    if (selected == 1) {tft.setTextColor(TFT_CYAN, TFT_BLACK); selected = 0;}
-    else {tft.setTextColor(TFT_MAGENTA, TFT_BLACK); selected = 1;}
+    if (selected == 1) {M5.Lcd.setTextColor(TFT_CYAN, TFT_BLACK); selected = 0;}
+    else {M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLACK); selected = 1;}
   }
 
   while (SerialBT.available()) {
@@ -105,7 +103,7 @@ void loop(void) {
       yDraw = scroll_line(); // It can take 13ms to scroll and blank 16 pixel lines
     }
     if (data > 31 && data < 128) {
-      xPos += tft.drawChar(data,xPos,yDraw,2);
+      xPos += M5.Lcd.drawChar(data,xPos,yDraw,2);
       blank[(18+(yStart-TOP_FIXED_AREA)/TEXT_HEIGHT)%19]=xPos; // Keep a record of line lengths
     }
     change_colour = 1; // Line to indicate buffer is being emptied
@@ -118,7 +116,7 @@ void loop(void) {
 int scroll_line() {
   int yTemp = yStart; // Store the old yStart, this is where we draw the next line
   // Use the record of line lengths to optimise the rectangle size we need to erase the top line
-  tft.fillRect(0,yStart,blank[(yStart-TOP_FIXED_AREA)/TEXT_HEIGHT],TEXT_HEIGHT, TFT_BLACK);
+  M5.Lcd.fillRect(0,yStart,blank[(yStart-TOP_FIXED_AREA)/TEXT_HEIGHT],TEXT_HEIGHT, TFT_BLACK);
 
   // Change the top of the scroll area
   yStart+=TEXT_HEIGHT;
@@ -134,20 +132,20 @@ int scroll_line() {
 // ##############################################################################################
 // We are using a hardware feature of the display, so we can only scroll in portrait orientation
 void setupScrollArea(uint16_t tfa, uint16_t bfa) {
-  tft.writecommand(ILI9341_VSCRDEF); // Vertical scroll definition
-  tft.writedata(tfa >> 8);           // Top Fixed Area line count
-  tft.writedata(tfa);
-  tft.writedata((YMAX-tfa-bfa)>>8);  // Vertical Scrolling Area line count
-  tft.writedata(YMAX-tfa-bfa);
-  tft.writedata(bfa >> 8);           // Bottom Fixed Area line count
-  tft.writedata(bfa);
+  M5.Lcd.writecommand(ILI9341_VSCRDEF); // Vertical scroll definition
+  M5.Lcd.writedata(tfa >> 8);           // Top Fixed Area line count
+  M5.Lcd.writedata(tfa);
+  M5.Lcd.writedata((YMAX-tfa-bfa)>>8);  // Vertical Scrolling Area line count
+  M5.Lcd.writedata(YMAX-tfa-bfa);
+  M5.Lcd.writedata(bfa >> 8);           // Bottom Fixed Area line count
+  M5.Lcd.writedata(bfa);
 }
 
 // ##############################################################################################
 // Setup the vertical scrolling start address pointer
 // ##############################################################################################
 void scrollAddress(uint16_t vsp) {
-  tft.writecommand(ILI9341_VSCRSADD); // Vertical scrolling pointer
-  tft.writedata(vsp>>8);
-  tft.writedata(vsp);
+  M5.Lcd.writecommand(ILI9341_VSCRSADD); // Vertical scrolling pointer
+  M5.Lcd.writedata(vsp>>8);
+  M5.Lcd.writedata(vsp);
 }
