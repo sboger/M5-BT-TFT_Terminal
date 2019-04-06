@@ -3,7 +3,9 @@ M5 Core Bluetooth to TFT display terminal. This sketch makes your M5 Core into a
 
 Currently using the TFT_eSPI library directly as M5.Lcd scrolling is broken. Code framework nearly entirely from https://github.com/Bodmer/TFT_eSPI/tree/master/examples/320%20x%20240/TFT_Terminal. 
 
-This STABLE master branch is working, but not using the M5Stack library. See the m5stack branch for direct m5stack library usage. The m5stack branch will continue to be updated.
+This STABLE master branch is working, but not using the M5Stack library. Left here for example purposes. Focusing on the m5stack branch now. Will merge in the future.
+
+See the m5stack branch for direct m5stack library usage and most up to date code.
 
 You need to first define the driver to use with TFT_eSPI:
 ```
