@@ -5,6 +5,7 @@ Currently using the TFT_eSPI library directly as M5.Lcd scrolling is broken.
 
 Linux Example. For Windows, ask Bill G.
 
+```
 $ sudo bluetoothctl
 [bluetooth]# agent on
 [bluetooth]# scan on
@@ -17,5 +18,5 @@ $ sudo bluetoothctl
 CTRL-D
 $ sudo rfcomm connect /dev/rfcomm0 <bluetooth address> 1
 $ tail -f /var/log/syslog > /dev/rfcomm0
-
+```
 
