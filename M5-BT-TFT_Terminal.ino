@@ -22,8 +22,6 @@
   BSD license applies, all text above must be included in any
   redistribution
  *************************************************************/
-//#include <TFT_eSPI.h> // Hardware-specific library
-//#include <SPI.h>
 #include <M5Stack.h>
 #include "BluetoothSerial.h"
 
@@ -61,7 +59,9 @@ int blank[19]; // We keep all the strings pixel lengths to optimise the speed of
 
 void setup() {
   M5.begin();
-
+  
+  M5.Power.begin();
+  
   // Setup the TFT display
   M5.Lcd.init();
   M5.Lcd.setRotation(1);
@@ -85,15 +85,34 @@ void setup() {
 
 
 void loop(void) {
+
+  M5.update();
+  
   //  These lines change the text colour when the serial buffer is emptied
   //  These are test lines to see if we may be losing characters
   //  Also uncomment the change_colour line below to try them
   //
+  
   if (change_colour){
     change_colour = 0;
     if (selected == 1) {M5.Lcd.setTextColor(TFT_CYAN, TFT_BLACK); selected = 0;}
     else {M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLACK); selected = 1;}
   }
+
+  //if (M5.BtnA.isPressed()) {
+  //  M5.Lcd.clear();
+  //}
+
+  //if (M5.BtnC.isReleased()) {
+  //  M5.Lcd.setBrightness(0);
+  //  M5.Lcd.sleep();
+  //} else {
+  //  M5.Lcd.wakeup();    
+  //  M5.Lcd.setBrightness(200);
+  //}
+
+  M5.Lcd.drawString(String(M5.Power.getBatteryLevel()),290,0,2);
+
 
   while (SerialBT.available()) {
     data = SerialBT.read();
