@@ -132,9 +132,8 @@ void loop(void) {
 // Call this function to get get battery status
 // ##############################################################################################
 void displayBatt() {
-  //M5.Lcd.setTextColor(TFT_WHITE, TFT_BLUE);
-  M5.Lcd.drawCentreString(String(M5.Power.getBatteryLevel()),290,0,2);
-  //M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
+  String battstat = ' ' + String(M5.Power.getBatteryLevel()) + ' ';
+  M5.Lcd.drawCentreString(battstat,300,0,2);
 }
 
 // ##############################################################################################
