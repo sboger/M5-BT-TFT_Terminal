@@ -27,8 +27,6 @@
 
 BluetoothSerial SerialBT;
 
-//TFT_eSPI tft = TFT_eSPI();       // Invoke custom library
-
 // The scrolling area must be a integral multiple of TEXT_HEIGHT
 #define TEXT_HEIGHT 16 // Height of text to be printed and scrolled
 #define BOT_FIXED_AREA 0 // Number of lines in bottom fixed area (lines counted from bottom of screen)
@@ -132,8 +130,8 @@ void loop(void) {
 // Call this function to get get battery status
 // ##############################################################################################
 void displayBatt() {
-  String battstat = ' ' + String(M5.Power.getBatteryLevel()) + ' ';
-  M5.Lcd.drawCentreString(battstat,300,0,2);
+  String battstat = " " + String(M5.Power.getBatteryLevel()) + "% ";
+  M5.Lcd.drawString(battstat,270,0,2);
 }
 
 // ##############################################################################################
