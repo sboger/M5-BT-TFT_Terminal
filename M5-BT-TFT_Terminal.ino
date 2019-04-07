@@ -130,8 +130,10 @@ void loop(void) {
 // Call this function to get get battery status
 // ##############################################################################################
 void displayBatt() {
-  String battstat = " " + String(M5.Power.getBatteryLevel()) + "% ";
-  M5.Lcd.drawString(battstat,270,0,2);
+
+  String battstat = String(M5.Power.getBatteryLevel()) + " ";
+  M5.Lcd.drawString(battstat.substring(0,3),290,0,2);
+
 }
 
 // ##############################################################################################
