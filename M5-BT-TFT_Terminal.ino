@@ -92,13 +92,15 @@ void loop(void) {
   //  These are test lines to see if we may be losing characters
   //  Also uncomment the change_colour line below to try them
   //
-
-  displayBatt();
   
   if (change_colour) {
+    displayBatt();
     change_colour = 0;
-    if (selected == 1) {M5.Lcd.setTextColor(TFT_CYAN, TFT_BLACK); selected = 0;}
-  else {M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLACK); selected = 1;}
+    if (selected == 1) {
+      M5.Lcd.setTextColor(TFT_CYAN, TFT_BLACK); selected = 0;
+    } else {
+      M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLACK); selected = 1;
+    }
   }
 
   //if (M5.BtnA.isPressed()) {
@@ -134,6 +136,7 @@ void loop(void) {
 // ##############################################################################################
 void displayBatt() {
 
+  M5.Lcd.setTextColor(TFT_WHITE, TFT_BLUE);
   String battstat = String(M5.Power.getBatteryLevel()) + " ";
   M5.Lcd.drawString(battstat.substring(0,3),290,0,2);
 
