@@ -74,11 +74,11 @@ void setup() {
   M5.Lcd.setRotation(1);
   M5.Lcd.fillScreen(TFT_BLACK);
   
-  SerialBT.begin("BLUETERM"); //Bluetooth device name
+  SerialBT.begin("BLUETERM5"); //Bluetooth device name
   
   M5.Lcd.setTextColor(TFT_WHITE, TFT_BLUE);
   M5.Lcd.fillRect(0,0,320,16, TFT_BLUE);
-  M5.Lcd.drawCentreString(" BLUETERM ",320/2,0,2);
+  M5.Lcd.drawCentreString(" BLUETERM5 ",320/2,0,2);
 
   // Change color for scrolling zone text
   M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
