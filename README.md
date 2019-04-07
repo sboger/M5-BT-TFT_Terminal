@@ -22,7 +22,7 @@ $ sudo bluetoothctl
   [NEW] Device 08:3E:8E:E6:79:47 annapurna
   [NEW] Device 00:25:56:D1:36:6B ubuntu-0
   ....
-  [NEW] Device <bluetooth address> BLUETERM
+  [NEW] Device <bluetooth address> BLUETERM5
 [bluetooth]# pair <bluetooth address>
 [bluetooth]# trust <bluetooth address>
 CTRL-D
