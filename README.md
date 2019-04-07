@@ -12,7 +12,7 @@ You need to first define the driver to use with TFT_eSPI:
 s@AirBoi:~$ cd Arduino/libraries/
 s@AirBoi:~/Arduino/libraries$ cd TFT_eSPI/
 s@AirBoi:~/Arduino/libraries/TFT_eSPI$ vim User_Setup_Select.h 
-Find and UNCOMMENT: //#include <User_Setups/Setup1_ILI9341.h>  // Setup file configured for my ILI9341
+Find and UNCOMMENT: //#include <User_Setups/Setup12_M5Stack.h>           // Setup file for the ESP32 based M5Stack
 ```
 
 Linux Example:
