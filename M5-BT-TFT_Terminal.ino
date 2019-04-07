@@ -32,7 +32,10 @@ BluetoothSerial SerialBT;
 #define BOT_FIXED_AREA 0 // Number of lines in bottom fixed area (lines counted from bottom of screen)
 #define TOP_FIXED_AREA 16 // Number of lines in top fixed area (lines counted from top of screen)
 #define YMAX 240 // Bottom of screen area
-#define LCD_BRIGHTNESS 100 // 100 = 50%
+
+#define LCD_BRIGHTNESS 50 // Save battery. 50%
+#define SECS_TO_SLEEP 30  // Set display to auto sleep after 30 seconds
+                          // Note: Will auto-awaken on input
 
 // The initial y coordinate of the top of the scrolling area
 uint16_t yStart = TOP_FIXED_AREA;
@@ -44,12 +47,14 @@ uint16_t yDraw = YMAX - BOT_FIXED_AREA - TEXT_HEIGHT;
 // Keep track of the drawing x coordinate
 uint16_t xPos = 0;
 
-// For the byte we read from the serial port
+// For the byte we read from the BT port
 byte data = 0;
 
-// A few test variables used during debugging
-boolean change_colour = 1;
+// Yes, we want to change color on each input line.
+boolean change_color = 1;
 boolean selected = 1;
+
+long timeSinceLastUpdate = 0;
 
 // We have to blank the top line each time the display is scrolled, but this takes up to 13 milliseconds
 // for a full width line, meanwhile the serial buffer may be filling... and overflowing
@@ -75,7 +80,7 @@ void setup() {
   M5.Lcd.fillRect(0,0,320,16, TFT_BLUE);
   M5.Lcd.drawCentreString(" BLUETERM ",320/2,0,2);
 
-  // Change colour for scrolling zone text
+  // Change color for scrolling zone text
   M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
 
   // Setup scroll area
@@ -89,15 +94,16 @@ void setup() {
 void loop(void) {
 
   M5.update();
+
+  if (millis() - timeSinceLastUpdate > (1000L*SECS_TO_SLEEP)) {
+    M5.Lcd.setBrightness(0);
+    M5.Lcd.sleep();
+    timeSinceLastUpdate = millis();
+  }
   
-  //  These lines change the text colour when the serial buffer is emptied
-  //  These are test lines to see if we may be losing characters
-  //  Also uncomment the change_colour line below to try them
-  //
-  
-  if (change_colour) {
+  if (change_color) {
     displayBatt();
-    change_colour = 0;
+    change_color = 0;
     if (selected == 1) {
       M5.Lcd.setTextColor(TFT_CYAN, TFT_BLACK); selected = 0;
     } else {
@@ -109,9 +115,12 @@ void loop(void) {
   //  M5.Lcd.clear();
   //}
 
-  if (M5.BtnC.isPressed()) {
+  if (M5.BtnC.wasReleased()) {
+    M5.Lcd.setBrightness(LCD_BRIGHTNESS);
+    M5.Lcd.wakeup();
+  } else if (M5.BtnC.wasReleasefor(400)) {
+    M5.Lcd.sleep();    
     M5.Lcd.setBrightness(0);
-    M5.Lcd.sleep();
   }
 
   while (SerialBT.available()) {
@@ -129,7 +138,7 @@ void loop(void) {
       xPos += M5.Lcd.drawChar(data,xPos,yDraw,2);
       blank[(18+(yStart-TOP_FIXED_AREA)/TEXT_HEIGHT)%19]=xPos; // Keep a record of line lengths
     }
-    change_colour = 1; // Line to indicate buffer is being emptied
+    change_color = 1; // Line to indicate buffer is being emptied
   }
 }
 
@@ -140,8 +149,6 @@ void displayBatt() {
 
   String battstat;
 
-  M5.Lcd.setTextColor(TFT_WHITE, TFT_BLUE);
-
   if (M5.Power.isChargeFull()) {
     battstat = "FULL";
   } else if (M5.Power.isCharging()) {
@@ -149,7 +156,9 @@ void displayBatt() {
   } else {
     battstat = String(M5.Power.getBatteryLevel()) + "  ";
   }
-  
+
+  M5.Lcd.setTextColor(TFT_WHITE, TFT_BLUE);
+
   M5.Lcd.drawString(battstat.substring(0,4),280,0,2);
   
 }

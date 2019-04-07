@@ -7,7 +7,10 @@ This MAIN m5stack branch is for work on integrating into M5Stack.
 
 * LCD_BRIGHTNESS setting in sketch 
 * Battery status upper right
-* Button C powers off display to save battery. Display will auto-awaken on data input.
+* Display will autosleep after SECS_TO_SLEEP.
+* Push Button C to wake display.
+* Long-Push Button C to sleep display.
+* *DISPLAY WILL AUTO-WAKE ON ANY INPUT.*
 
 In Arduino, set Tool->Partition Scheme-> No OTA (Large APP)
 
