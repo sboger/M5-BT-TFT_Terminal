@@ -32,6 +32,7 @@ BluetoothSerial SerialBT;
 #define BOT_FIXED_AREA 0 // Number of lines in bottom fixed area (lines counted from bottom of screen)
 #define TOP_FIXED_AREA 16 // Number of lines in top fixed area (lines counted from top of screen)
 #define YMAX 240 // Bottom of screen area
+#define LCD_BRIGHTNESS 200 // 100 = 50%
 
 // The initial y coordinate of the top of the scrolling area
 uint16_t yStart = TOP_FIXED_AREA;
@@ -62,6 +63,7 @@ void setup() {
   
   // Setup the TFT display
   M5.Lcd.init();
+  M5.Lcd.setBrightness(LCD_BRIGHTNESS);
   M5.Lcd.setRotation(1);
   M5.Lcd.fillScreen(TFT_BLACK);
   
@@ -103,15 +105,16 @@ void loop(void) {
   //  M5.Lcd.clear();
   //}
 
-  //if (M5.BtnC.isReleased()) {
-  //  M5.Lcd.setBrightness(0);
-  //  M5.Lcd.sleep();
-  //} else {
-  //  M5.Lcd.wakeup();    
-  //  M5.Lcd.setBrightness(200);
-  //}
+  if (M5.BtnC.isPressed()) {
+    M5.Lcd.setBrightness(0);
+    M5.Lcd.sleep();
+  }
 
   while (SerialBT.available()) {
+
+    M5.Lcd.wakeup();    
+    M5.Lcd.setBrightness(LCD_BRIGHTNESS);
+  
     data = SerialBT.read();
     // If it is a CR or we are near end of line then scroll one line
     if (data == '\r' || xPos > 311) {
