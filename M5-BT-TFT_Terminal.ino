@@ -24,7 +24,7 @@
  *************************************************************/
 #include <M5Stack.h>
 #include "BluetoothSerial.h"
-
+#include "WiFi.h"
 BluetoothSerial SerialBT;
 
 // The scrolling area must be a integral multiple of TEXT_HEIGHT
@@ -32,7 +32,7 @@ BluetoothSerial SerialBT;
 #define BOT_FIXED_AREA 0 // Number of lines in bottom fixed area (lines counted from bottom of screen)
 #define TOP_FIXED_AREA 16 // Number of lines in top fixed area (lines counted from top of screen)
 #define YMAX 240 // Bottom of screen area
-#define LCD_BRIGHTNESS 200 // 100 = 50%
+#define LCD_BRIGHTNESS 100 // 100 = 50%
 
 // The initial y coordinate of the top of the scrolling area
 uint16_t yStart = TOP_FIXED_AREA;
@@ -58,6 +58,8 @@ int blank[19]; // We keep all the strings pixel lengths to optimise the speed of
 
 void setup() {
   M5.begin();
+
+  WiFi.mode(WIFI_OFF);
   
   M5.Power.begin();
   
@@ -136,10 +138,20 @@ void loop(void) {
 // ##############################################################################################
 void displayBatt() {
 
-  M5.Lcd.setTextColor(TFT_WHITE, TFT_BLUE);
-  String battstat = String(M5.Power.getBatteryLevel()) + " ";
-  M5.Lcd.drawString(battstat.substring(0,3),290,0,2);
+  String battstat;
 
+  M5.Lcd.setTextColor(TFT_WHITE, TFT_BLUE);
+
+  if (M5.Power.isChargeFull()) {
+    battstat = "FULL";
+  } else if (M5.Power.isCharging()) {
+    battstat = "CHRG";
+  } else {
+    battstat = String(M5.Power.getBatteryLevel()) + "  ";
+  }
+  
+  M5.Lcd.drawString(battstat.substring(0,4),280,0,2);
+  
 }
 
 // ##############################################################################################
