@@ -92,11 +92,13 @@ void loop(void) {
   //  These are test lines to see if we may be losing characters
   //  Also uncomment the change_colour line below to try them
   //
+
+  displayBatt();
   
-  if (change_colour){
+  if (change_colour) {
     change_colour = 0;
     if (selected == 1) {M5.Lcd.setTextColor(TFT_CYAN, TFT_BLACK); selected = 0;}
-    else {M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLACK); selected = 1;}
+  else {M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLACK); selected = 1;}
   }
 
   //if (M5.BtnA.isPressed()) {
@@ -111,9 +113,6 @@ void loop(void) {
   //  M5.Lcd.setBrightness(200);
   //}
 
-  M5.Lcd.drawString(String(M5.Power.getBatteryLevel()),290,0,2);
-
-
   while (SerialBT.available()) {
     data = SerialBT.read();
     // If it is a CR or we are near end of line then scroll one line
@@ -127,6 +126,15 @@ void loop(void) {
     }
     change_colour = 1; // Line to indicate buffer is being emptied
   }
+}
+
+// ##############################################################################################
+// Call this function to get get battery status
+// ##############################################################################################
+void displayBatt() {
+  //M5.Lcd.setTextColor(TFT_WHITE, TFT_BLUE);
+  M5.Lcd.drawCentreString(String(M5.Power.getBatteryLevel()),290,0,2);
+  //M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
 }
 
 // ##############################################################################################
