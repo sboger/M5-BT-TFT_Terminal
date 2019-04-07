@@ -1,5 +1,5 @@
-# M5 BLUETERM5
-M5 Core Bluetooth to TFT display terminal. This sketch makes your M5 Core into a remote bluetooth terminal.
+# BLUETERM5 - M5Stack Core Bluetooth to TFT terminal.
+This sketch makes your M5 Core into a remote bluetooth terminal.
 
 Starting Code framework nearly entirely from https://github.com/Bodmer/TFT_eSPI/tree/master/examples/320%20x%20240/TFT_Terminal. 
 
