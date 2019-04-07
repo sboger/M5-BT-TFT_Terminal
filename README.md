@@ -9,6 +9,8 @@ This MAIN m5stack branch is for work on integrating into M5Stack.
 * Battery status upper right
 * Button C powers off display to save battery. Display will auto-awaken on data input.
 
+In Arduino, set Tool->Partition Scheme-> No OTA (Large APP)
+
 Linux Example:
 ```
 $ sudo bluetoothctl
