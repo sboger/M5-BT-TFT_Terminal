@@ -7,7 +7,7 @@ This MAIN m5stack branch is for work on integrating into M5Stack.
 
 * LCD_BRIGHTNESS setting in sketch 
 * Battery status upper right
-* Display will autosleep after SECS_TO_SLEEP.
+* Display will autosleep after SECS_TO_SLEEP setting in sketch.
 * Push Button C to wake display.
 * Long-Push Button C to sleep display.
 * *DISPLAY WILL AUTO-WAKE ON ANY INPUT.*
