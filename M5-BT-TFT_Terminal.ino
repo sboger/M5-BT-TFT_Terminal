@@ -124,7 +124,7 @@ void loop(void) {
       xPos += M5.Lcd.drawChar(data,xPos,yDraw,1);
       blank[(18+(yStart-TOP_FIXED_AREA)/TEXT_HEIGHT)%19]=xPos; // Keep a record of line lengths
     }
-    timeSinceLastUpdate = millis()
+    timeSinceLastUpdate = millis();
   }  
   
   changeTripped = 1;
