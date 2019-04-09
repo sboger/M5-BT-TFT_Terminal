@@ -1,7 +1,7 @@
 # BLUETERM5 - M5Stack Core Bluetooth to TFT terminal.
 This sketch makes your M5 Core into a remote bluetooth terminal.
 
-* Press Button A for no display auto-sleep (i.e. NoZ, default). Long-press Button A to turn on auto-sleep (ZZZ).
+* Press Button A to turn off auto-sleep (i.e. NoZ, default). Long-press Button A to turn on auto-sleep (ZZZ).
 * Press Button B to cycle display brightness down and up. Long-press to return to full brightness
 * Press Button C to force-wake display. Long-press Button C to force-sleep display.
 * Battery status upper right
