@@ -1,23 +1,25 @@
 #include <M5Stack.h>
 #include "BluetoothSerial.h"
-#include "WiFi.h"
+//#include "WiFi.h"
 
 BluetoothSerial SerialBT;
 
 // The scrolling area setup. Must be a integral multiple of TEXT_HEIGHT
-#define TEXT_HEIGHT 16 // Height of text to be printed and scrolled
+#define TEXT_HEIGHT 8 // Height of text to be printed and scrolled
 #define BOT_FIXED_AREA 0 // Number of lines in bottom fixed area (lines counted from bottom of screen)
 #define TOP_FIXED_AREA 16 // Number of lines in top fixed area (lines counted from top of screen)
 #define YMAX 240 // Bottom of screen area
 // end scrolling
 
+#define INPUT_COLOR1 TFT_CYAN
+#define INPUT_COLOR2 TFT_WHITE //TFT_MAGENTA
 
 #define SECS_TO_SLEEP 30  // Set auto sleep time to 30 seconds
                           // Note: Will auto-awaken on input
 boolean sleepMode = 0;    // Start with sleep mode on (1) or off (0).
 
 
-int LcdBrightness = 80; // 50%
+int LcdBrightness = 100; //
 
 
 // The initial y coordinate of the top of the scrolling area
@@ -45,7 +47,7 @@ int blank[19];
 void setup() {
   M5.begin();
 
-  WiFi.mode(WIFI_OFF);
+  //WiFi.mode(WIFI_OFF);
   
   M5.Power.begin();
   
@@ -57,12 +59,12 @@ void setup() {
   
   SerialBT.begin("BLUETERM5"); //Bluetooth device name
   
-  M5.Lcd.setTextColor(TFT_WHITE, TFT_BLUE);
+  M5.Lcd.setTextColor(TFT_CYAN, TFT_BLUE);
   M5.Lcd.fillRect(0,0,320,16, TFT_BLUE);
   M5.Lcd.drawCentreString(" BLUETERM5 ",320/2,0,2);
 
   // Change color for scrolling zone text
-  M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
+  M5.Lcd.setTextColor(TFT_WHITE, TFT_TRANSPARENT);
 
   // Setup scroll area
   setupScrollArea(TOP_FIXED_AREA, BOT_FIXED_AREA);
@@ -83,6 +85,7 @@ void loop(void) {
     sleepMode = 0;
   } else if (M5.BtnA.wasReleasefor(400)) {
     sleepMode = 1;
+    timeSinceLastUpdate = millis(); // needed or display goes to sleep immediately
   }
 
   // Y U BROKEN???
@@ -116,11 +119,13 @@ void loop(void) {
     }
     
     if (data > 31 && data < 128) {
-      xPos += M5.Lcd.drawChar(data,xPos,yDraw,2);
+      xPos += M5.Lcd.drawChar(data,xPos,yDraw,1);
       blank[(18+(yStart-TOP_FIXED_AREA)/TEXT_HEIGHT)%19]=xPos; // Keep a record of line lengths
-    }  
+    } 
   }  
+  
   changeTripped = 1;
+  
   if (sleepMode) {
     if (millis() - timeSinceLastUpdate > (1000L*SECS_TO_SLEEP)) {
       M5.Lcd.setBrightness(0);
@@ -128,6 +133,7 @@ void loop(void) {
       timeSinceLastUpdate = millis();
      }
   }
+
 }
 
 // ##############################################################################################
@@ -145,8 +151,8 @@ void displayBatt() {
     battstat = String(M5.Power.getBatteryLevel()) + "%";
   }
 
-  M5.Lcd.setTextColor(TFT_WHITE, TFT_BLUE);
-  M5.Lcd.drawString("["+battstat.substring(0,4)+"] ",270,1,1);
+  M5.Lcd.setTextColor(TFT_CYAN, TFT_BLUE);
+  M5.Lcd.drawString(battstat,290,1,1);
 }
 
 // ##############################################################################################
@@ -155,7 +161,7 @@ void displayBatt() {
 void displaySleepMode(boolean mode) {
 
   String sMode = (String)(mode ? "Zzz " : "NoZ ");
-  M5.Lcd.setTextColor(TFT_WHITE, TFT_BLUE);
+  M5.Lcd.setTextColor(TFT_CYAN, TFT_BLUE);
   M5.Lcd.drawString(sMode,10,1,1);
 }
 
@@ -205,11 +211,11 @@ void scrollAddress(uint16_t vsp) {
 // ##############################################################################################
 void colorRotator() {
   if (changeTripped) {
-    if (changeColor) { 
-      M5.Lcd.setTextColor(TFT_CYAN, TFT_BLACK);
+    if (changeColor) {
+      M5.Lcd.setTextColor(INPUT_COLOR1, TFT_TRANSPARENT);
       changeColor=0;
     } else {
-      M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLACK);
+      M5.Lcd.setTextColor(INPUT_COLOR2, TFT_TRANSPARENT);
       changeColor=1;
     }
     changeTripped=0;

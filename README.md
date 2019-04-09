@@ -11,6 +11,7 @@ This MAIN m5stack branch is for work on integrating into M5Stack.
 * Battery status upper right
 * Auto-Sleep status in upper left.
 
+I'm using the latest M5STACK from github.
 In Arduino, set Tool->Partition Scheme-> No OTA (Large APP)
 
 Linux Example:
