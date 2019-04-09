@@ -6,9 +6,9 @@ This MAIN m5stack branch is for work on integrating into M5Stack.
 * Press Button A for no display auto-sleep (i.e. NoZ, default). Long-press Button A to turn on auto-sleep (ZZZ).
   Press Button B to cycle display brightness down and up. Long-press to return to full brightness
 * Press Button C to force-wake display. Long-press Button C to force-sleep display.
-* NOTE: *DISPLAY WILL AUTO-WAKE ON ANY INPUT. (Including during auto-sleep or force-sleep)*
 * Battery status upper right
 * Auto-Sleep status in upper left.
+* NOTE: *DISPLAY WILL AUTO-WAKE ON ANY INPUT. (Including during auto-sleep or force-sleep)*
 
 I'm using the latest M5STACK from github.
 In Arduino, set Tool->Partition Scheme-> No OTA (Large APP)
