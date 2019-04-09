@@ -19,7 +19,7 @@ BluetoothSerial SerialBT;
 boolean sleepMode = 0;    // Start with sleep mode on (1) or off (0).
 
 
-int LcdBrightness = 100; //
+int LcdBrightness = 200; // Start at 100% brightness
 
 
 // The initial y coordinate of the top of the scrolling area
@@ -88,11 +88,13 @@ void loop(void) {
     timeSinceLastUpdate = millis(); // needed or display goes to sleep immediately
   }
 
-  // Y U BROKEN???
   if (M5.BtnB.wasReleased()) {
-    M5.Lcd.setBrightness(++LcdBrightness);
+    LcdBrightness = (LcdBrightness-25);
+    if (LcdBrightness > 200 || LcdBrightness <= 0) { LcdBrightness = 200; } 
+    M5.Lcd.setBrightness(LcdBrightness);
   } else if (M5.BtnB.wasReleasefor(400)) {
-    M5.Lcd.setBrightness(--LcdBrightness);
+    LcdBrightness = 200;
+    M5.Lcd.setBrightness(LcdBrightness);
   }
 
   if (M5.BtnC.wasReleased()) {
@@ -113,7 +115,7 @@ void loop(void) {
     data = SerialBT.read();
     
     // If it is a CR or we are near end of line then scroll one line
-    if (data == '\r' || xPos > 311) {
+    if (data == '\r' || xPos > 315) {
       xPos = 0;
       yDraw = scroll_line(); // It can take 13ms to scroll and blank 16 pixel lines
     }
@@ -148,11 +150,11 @@ void displayBatt() {
   } else if (M5.Power.isCharging()) {
     battstat = "CHRG";
   } else {
-    battstat = String(M5.Power.getBatteryLevel()) + "%";
+    battstat = " " + String(M5.Power.getBatteryLevel()) + "%";
   }
 
   M5.Lcd.setTextColor(TFT_CYAN, TFT_BLUE);
-  M5.Lcd.drawString(battstat,290,1,1);
+  M5.Lcd.drawRightString(battstat,310,1,1);
 }
 
 // ##############################################################################################
