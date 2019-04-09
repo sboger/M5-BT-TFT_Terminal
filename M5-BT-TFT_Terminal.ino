@@ -19,7 +19,7 @@ BluetoothSerial SerialBT;
 boolean sleepMode = 0;    // Start with sleep mode on (1) or off (0).
 
 
-int LcdBrightness = 200; // Start at 100% brightness
+int LcdBrightness = 100; // Start at 50% brightness
 
 
 // The initial y coordinate of the top of the scrolling area
@@ -100,6 +100,7 @@ void loop(void) {
   if (M5.BtnC.wasReleased()) {
     M5.Lcd.setBrightness(LcdBrightness);
     M5.Lcd.wakeup();
+    timeSinceLastUpdate = millis();
   } else if (M5.BtnC.wasReleasefor(400)) {
     M5.Lcd.setBrightness(0);
     M5.Lcd.sleep();    
