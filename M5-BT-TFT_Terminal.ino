@@ -14,7 +14,7 @@ BluetoothSerial SerialBT;
 #define INPUT_COLOR1 TFT_CYAN
 #define INPUT_COLOR2 TFT_WHITE //TFT_MAGENTA
 
-#define SECS_TO_SLEEP 30  // Set auto sleep time to 30 seconds
+#define SECS_TO_SLEEP 10  // Set auto sleep time to 30 seconds
                           // Note: Will auto-awaken on input
 boolean sleepMode = 0;    // Start with sleep mode on (1) or off (0).
 
@@ -92,9 +92,13 @@ void loop(void) {
     LcdBrightness = (LcdBrightness-25);
     if (LcdBrightness > 200 || LcdBrightness <= 0) { LcdBrightness = 200; } 
     M5.Lcd.setBrightness(LcdBrightness);
+    M5.Lcd.wakeup();
+    timeSinceLastUpdate = millis();
   } else if (M5.BtnB.wasReleasefor(400)) {
-    LcdBrightness = 200;
+    LcdBrightness = 100;
     M5.Lcd.setBrightness(LcdBrightness);
+    M5.Lcd.wakeup();
+    timeSinceLastUpdate = millis();
   }
 
   if (M5.BtnC.wasReleased()) {
