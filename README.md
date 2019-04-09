@@ -1,16 +1,12 @@
 # BLUETERM5 - M5Stack Core Bluetooth to TFT terminal.
 This sketch makes your M5 Core into a remote bluetooth terminal.
 
-Credit goes to Bodmer for the example code this is based on: https://github.com/Bodmer/TFT_eSPI/tree/master/examples/320%20x%20240/TFT_Terminal. 
-
-This MAIN m5stack branch is for work on integrating into M5Stack.
-
 * Press Button A for no display auto-sleep (i.e. NoZ, default). Long-press Button A to turn on auto-sleep (ZZZ).
   Press Button B to cycle display brightness down and up. Long-press to return to full brightness
-* Press Button C to force wake display. Long-press Button C to force sleep display.
-* NOTE: *DISPLAY WILL AUTO-WAKE ON ANY INPUT.*
+* Press Button C to force-wake display. Long-press Button C to force-sleep display.
 * Battery status upper right
 * Auto-Sleep status in upper left.
+* NOTE: *DISPLAY WILL AUTO-WAKE ON ANY INPUT. (Including during auto-sleep or force-sleep)*
 
 I'm using the latest M5STACK from github.
 In Arduino, set Tool->Partition Scheme-> No OTA (Large APP)
@@ -31,5 +27,7 @@ $ sudo rfcomm connect /dev/rfcomm0 <bluetooth address> 1
 $ tail -f /var/log/syslog > /dev/rfcomm0
 ```
 
-![Example1](images/IMG_20190406_143541.jpg)
-![Example2](images/IMG_20190406_143720.jpg)
+![Example1](images/dot.gif)
+![Example2](images/dot.gif)
+
+Credit goes to Bodmer for the example code this started as: https://github.com/Bodmer/TFT_eSPI/tree/master/examples/320%20x%20240/TFT_Terminal. 
