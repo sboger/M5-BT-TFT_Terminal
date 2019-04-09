@@ -100,12 +100,12 @@ void loop(void) {
     M5.Lcd.sleep();    
   }
 
-  colorRotator();
   
   while (SerialBT.available()) {
     
     M5.Lcd.setBrightness(LcdBrightness);
     M5.Lcd.wakeup();
+    colorRotator();
   
     data = SerialBT.read();
     
@@ -118,12 +118,9 @@ void loop(void) {
     if (data > 31 && data < 128) {
       xPos += M5.Lcd.drawChar(data,xPos,yDraw,2);
       blank[(18+(yStart-TOP_FIXED_AREA)/TEXT_HEIGHT)%19]=xPos; // Keep a record of line lengths
-    }
-
-    changeTripped=1;
-  
+    }  
   }  
-   
+  changeTripped = 1;
   if (sleepMode) {
     if (millis() - timeSinceLastUpdate > (1000L*SECS_TO_SLEEP)) {
       M5.Lcd.setBrightness(0);
