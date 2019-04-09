@@ -1,8 +1,6 @@
 # BLUETERM5 - M5Stack Core Bluetooth to TFT terminal.
 This sketch makes your M5 Core into a remote bluetooth terminal.
 
-This MAIN m5stack branch is for work on integrating into M5Stack.
-
 * Press Button A for no display auto-sleep (i.e. NoZ, default). Long-press Button A to turn on auto-sleep (ZZZ).
   Press Button B to cycle display brightness down and up. Long-press to return to full brightness
 * Press Button C to force-wake display. Long-press Button C to force-sleep display.
@@ -29,7 +27,7 @@ $ sudo rfcomm connect /dev/rfcomm0 <bluetooth address> 1
 $ tail -f /var/log/syslog > /dev/rfcomm0
 ```
 
-![Example1]()
-![Example2]()
+![Example1](images/dot.gif)
+![Example2](images/dot.gif)
 
 Credit goes to Bodmer for the example code this started as: https://github.com/Bodmer/TFT_eSPI/tree/master/examples/320%20x%20240/TFT_Terminal. 
