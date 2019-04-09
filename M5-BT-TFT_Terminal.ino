@@ -1,41 +1,24 @@
-
-/*************************************************************
-  This sketch implements a simple serial receive terminal
-  program for monitoring serial debug messages from another
-  board.
-  
-  Connect GND to target board GND
-  Connect RX line to TX line of target board
-  Make sure the target and terminal have the same baud rate
-  and serial stettings!
-
-  The sketch works with the ILI9341 TFT 240x320 display and
-  the called up libraries.
-  
-  The sketch uses the hardware scrolling feature of the
-  display. Modification of this sketch may lead to problems
-  unless the ILI9341 data sheet has been understood!
-
-  Updated by Bodmer 21/12/16 for TFT_eSPI library:
-  https://github.com/Bodmer/TFT_eSPI
-  
-  BSD license applies, all text above must be included in any
-  redistribution
- *************************************************************/
 #include <M5Stack.h>
 #include "BluetoothSerial.h"
 #include "WiFi.h"
+
 BluetoothSerial SerialBT;
 
-// The scrolling area must be a integral multiple of TEXT_HEIGHT
+// The scrolling area setup. Must be a integral multiple of TEXT_HEIGHT
 #define TEXT_HEIGHT 16 // Height of text to be printed and scrolled
 #define BOT_FIXED_AREA 0 // Number of lines in bottom fixed area (lines counted from bottom of screen)
 #define TOP_FIXED_AREA 16 // Number of lines in top fixed area (lines counted from top of screen)
 #define YMAX 240 // Bottom of screen area
+// end scrolling
 
-#define LCD_BRIGHTNESS 50 // Save battery. 50%
-#define SECS_TO_SLEEP 30  // Set display to auto sleep after 30 seconds
+
+#define SECS_TO_SLEEP 30  // Set auto sleep time to 30 seconds
                           // Note: Will auto-awaken on input
+boolean sleepMode = 0;    // Start with sleep mode on (1) or off (0).
+
+
+int LcdBrightness = 80; // 50%
+
 
 // The initial y coordinate of the top of the scrolling area
 uint16_t yStart = TOP_FIXED_AREA;
@@ -51,15 +34,13 @@ uint16_t xPos = 0;
 byte data = 0;
 
 // Yes, we want to change color on each input line.
-boolean change_color = 1;
-boolean selected = 1;
+boolean changeColor = 1;
+boolean changeTripped = 1;
 
+// timer
 long timeSinceLastUpdate = 0;
 
-// We have to blank the top line each time the display is scrolled, but this takes up to 13 milliseconds
-// for a full width line, meanwhile the serial buffer may be filling... and overflowing
-// We can speed up scrolling of short text lines by just blanking the character we drew
-int blank[19]; // We keep all the strings pixel lengths to optimise the speed of the top line blanking
+int blank[19];
 
 void setup() {
   M5.begin();
@@ -70,7 +51,7 @@ void setup() {
   
   // Setup the TFT display
   M5.Lcd.init();
-  M5.Lcd.setBrightness(LCD_BRIGHTNESS);
+  M5.Lcd.setBrightness(LcdBrightness);
   M5.Lcd.setRotation(1);
   M5.Lcd.fillScreen(TFT_BLACK);
   
@@ -94,51 +75,61 @@ void setup() {
 void loop(void) {
 
   M5.update();
-
-  if (millis() - timeSinceLastUpdate > (1000L*SECS_TO_SLEEP)) {
-    M5.Lcd.setBrightness(0);
-    M5.Lcd.sleep();
-    timeSinceLastUpdate = millis();
-  }
+  displayBatt();
+  displaySleepMode(sleepMode);
   
-  if (change_color) {
-    displayBatt();
-    change_color = 0;
-    if (selected == 1) {
-      M5.Lcd.setTextColor(TFT_CYAN, TFT_BLACK); selected = 0;
-    } else {
-      M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLACK); selected = 1;
-    }
+
+  if (M5.BtnA.wasReleased()) {
+    sleepMode = 0;
+  } else if (M5.BtnA.wasReleasefor(400)) {
+    sleepMode = 1;
   }
 
-  //if (M5.BtnA.isPressed()) {
-  //  M5.Lcd.clear();
-  //}
+  // Y U BROKEN???
+  if (M5.BtnB.wasReleased()) {
+    M5.Lcd.setBrightness(++LcdBrightness);
+  } else if (M5.BtnB.wasReleasefor(400)) {
+    M5.Lcd.setBrightness(--LcdBrightness);
+  }
 
   if (M5.BtnC.wasReleased()) {
-    M5.Lcd.setBrightness(LCD_BRIGHTNESS);
+    M5.Lcd.setBrightness(LcdBrightness);
     M5.Lcd.wakeup();
   } else if (M5.BtnC.wasReleasefor(400)) {
-    M5.Lcd.sleep();    
     M5.Lcd.setBrightness(0);
+    M5.Lcd.sleep();    
   }
 
+  colorRotator();
+  
   while (SerialBT.available()) {
-
-    M5.Lcd.wakeup();    
-    M5.Lcd.setBrightness(LCD_BRIGHTNESS);
+    
+    M5.Lcd.setBrightness(LcdBrightness);
+    M5.Lcd.wakeup();
   
     data = SerialBT.read();
+    
     // If it is a CR or we are near end of line then scroll one line
     if (data == '\r' || xPos > 311) {
       xPos = 0;
       yDraw = scroll_line(); // It can take 13ms to scroll and blank 16 pixel lines
     }
+    
     if (data > 31 && data < 128) {
       xPos += M5.Lcd.drawChar(data,xPos,yDraw,2);
       blank[(18+(yStart-TOP_FIXED_AREA)/TEXT_HEIGHT)%19]=xPos; // Keep a record of line lengths
     }
-    change_color = 1; // Line to indicate buffer is being emptied
+
+    changeTripped=1;
+  
+  }  
+   
+  if (sleepMode) {
+    if (millis() - timeSinceLastUpdate > (1000L*SECS_TO_SLEEP)) {
+      M5.Lcd.setBrightness(0);
+      M5.Lcd.sleep();
+      timeSinceLastUpdate = millis();
+     }
   }
 }
 
@@ -154,13 +145,21 @@ void displayBatt() {
   } else if (M5.Power.isCharging()) {
     battstat = "CHRG";
   } else {
-    battstat = String(M5.Power.getBatteryLevel()) + "  ";
+    battstat = String(M5.Power.getBatteryLevel()) + "%";
   }
 
   M5.Lcd.setTextColor(TFT_WHITE, TFT_BLUE);
+  M5.Lcd.drawString("["+battstat.substring(0,4)+"] ",270,1,1);
+}
 
-  M5.Lcd.drawString(battstat.substring(0,4),280,0,2);
-  
+// ##############################################################################################
+// Call this function to get get sleep mode
+// ##############################################################################################
+void displaySleepMode(boolean mode) {
+
+  String sMode = (String)(mode ? "Zzz " : "NoZ ");
+  M5.Lcd.setTextColor(TFT_WHITE, TFT_BLUE);
+  M5.Lcd.drawString(sMode,10,1,1);
 }
 
 // ##############################################################################################
@@ -201,4 +200,21 @@ void scrollAddress(uint16_t vsp) {
   M5.Lcd.writecommand(ILI9341_VSCRSADD); // Vertical scrolling pointer
   M5.Lcd.writedata(vsp>>8);
   M5.Lcd.writedata(vsp);
+}
+
+
+// ##############################################################################################
+// flip the color for output
+// ##############################################################################################
+void colorRotator() {
+  if (changeTripped) {
+    if (changeColor) { 
+      M5.Lcd.setTextColor(TFT_CYAN, TFT_BLACK);
+      changeColor=0;
+    } else {
+      M5.Lcd.setTextColor(TFT_MAGENTA, TFT_BLACK);
+      changeColor=1;
+    }
+    changeTripped=0;
+  }
 }
