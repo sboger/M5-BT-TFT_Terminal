@@ -24,7 +24,7 @@ $ sudo bluetoothctl
 [bluetooth]# trust <bluetooth address>
 CTRL-D
 $ sudo rfcomm connect /dev/rfcomm0 <bluetooth address> 1
-$ tail -f /var/log/syslog > /dev/rfcomm0
+$ tail -1f /var/log/syslog > /dev/rfcomm0
 ```
 
 ![Example1](images/dot.gif)
