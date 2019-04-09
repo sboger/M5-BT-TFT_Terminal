@@ -123,7 +123,8 @@ void loop(void) {
     if (data > 31 && data < 128) {
       xPos += M5.Lcd.drawChar(data,xPos,yDraw,1);
       blank[(18+(yStart-TOP_FIXED_AREA)/TEXT_HEIGHT)%19]=xPos; // Keep a record of line lengths
-    } 
+    }
+    timeSinceLastUpdate = millis()
   }  
   
   changeTripped = 1;
