@@ -64,7 +64,7 @@ void setup() {
   M5.Lcd.drawCentreString(" BLUETERM5 ",320/2,0,2);
 
   // Change color for scrolling zone text
-  M5.Lcd.setTextColor(TFT_WHITE, TFT_TRANSPARENT);
+  M5.Lcd.setTextColor(TFT_WHITE, TFT_BLACK);
 
   // Setup scroll area
   setupScrollArea(TOP_FIXED_AREA, BOT_FIXED_AREA);
@@ -214,10 +214,10 @@ void scrollAddress(uint16_t vsp) {
 void colorRotator() {
   if (changeTripped) {
     if (changeColor) {
-      M5.Lcd.setTextColor(INPUT_COLOR1, TFT_TRANSPARENT);
+      M5.Lcd.setTextColor(INPUT_COLOR1, TFT_BLACK);
       changeColor=0;
     } else {
-      M5.Lcd.setTextColor(INPUT_COLOR2, TFT_TRANSPARENT);
+      M5.Lcd.setTextColor(INPUT_COLOR2, TFT_BLACK);
       changeColor=1;
     }
     changeTripped=0;
