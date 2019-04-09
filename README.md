@@ -5,7 +5,6 @@ Credit goes to Bodmer for the example code this is based on: https://github.com/
 
 This MAIN m5stack branch is for work on integrating into M5Stack.
 
-* Colorized BT input borked while I clean it up.
 * Push Button A for no display auto-sleep (i.e. NoZ, default). Long-Push Button A to turn on display auto-sleep (ZZZ).
 * Push Button C to force wake display. Long-Push Button C to force sleep display.
 * NOTE: *DISPLAY WILL AUTO-WAKE ON ANY INPUT.*
