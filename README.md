@@ -27,7 +27,8 @@ $ sudo rfcomm connect /dev/rfcomm0 <bluetooth address> 1
 $ tail -1f /var/log/syslog > /dev/rfcomm0
 ```
 
-![Example1](images/dot.gif)
-![Example2](images/dot.gif)
+Old examples:
+![Example1](images/IMG_20190406_143541.jpg)
+![Example2](images/IMG_20190406_143720.jpg)
 
 Credit goes to Bodmer for the example code this started as: https://github.com/Bodmer/TFT_eSPI/tree/master/examples/320%20x%20240/TFT_Terminal. 
